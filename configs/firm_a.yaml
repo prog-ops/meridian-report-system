@@ -1,0 +1,55 @@
+firm_id: firm_A
+fund_name: Meridian Fixed Income Fund
+
+inputs:
+  guidelines: sample_docs/sample_fund_guidelines.pdf
+  guidelines_rules: config/guidelines_rules.yaml
+  holdings: sample_docs/sample_holdings.csv
+  answer_key: sample_docs/firm_A_answer_key.xlsx
+  fallback_answer_key: data/answer_keys/firm_A_answer_key.csv
+
+output_dir: output/firm_A
+audit_db: output/audit.db
+
+asset_class_mapping:
+  "Foreign Currency Bonds": "Foreign Currency Bonds (hedged)"
+  "Structured Credit": "Structured Credit (ABS/MBS)"
+
+calculation:
+  utilization:
+    format: percent_1dp
+    below_min_allocation_utilization: null
+
+  non_ig:
+    include_fallen_angels: false
+
+  gre_concentration:
+    level: issuer
+
+  single_issuer:
+    exclude_issuer_types:
+      - government
+      - cash
+    exclude_issuers:
+      - Singapore Government
+      - Monetary Authority of Singapore
+
+  rounding:
+    percent_value: 1
+    percent_utilization: 1
+    duration: 2
+    dv01: 0
+
+  status:
+    at_limit_tolerance: 0.005
+
+allocation_order:
+  - Singapore Government Securities
+  - MAS Bills
+  - Investment Grade Corporate Bonds
+  - High Yield Bonds
+  - Foreign Currency Bonds (hedged)
+  - Structured Credit (ABS/MBS)
+  - Cash & Cash Equivalents
+
+method_rules: []
