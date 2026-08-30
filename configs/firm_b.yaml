@@ -1,0 +1,75 @@
+firm_id: firm_B
+fund_name: Meridian Fixed Income Fund
+
+inputs:
+  guidelines: sample_docs/sample_fund_guidelines.pdf
+  guidelines_rules: config/guidelines_rules.yaml
+  holdings: sample_docs/sample_holdings.csv
+  answer_key: sample_docs/firm_B_answer_key.xlsx
+  fallback_answer_key: data/answer_keys/firm_B_answer_key.csv
+
+output_dir: output/firm_B
+audit_db: output/audit.db
+
+asset_class_mapping:
+  "Foreign Currency Bonds": "Foreign Currency Bonds (hedged)"
+  "Structured Credit": "Structured Credit (ABS/MBS)"
+
+calculation:
+  utilization:
+    format: truncated_bps
+    below_min_allocation_utilization: null
+
+  non_ig:
+    include_fallen_angels: true
+
+  gre_concentration:
+    level: parent
+
+  single_issuer:
+    exclude_issuer_types:
+      - government
+      - cash
+    exclude_issuers:
+      - Singapore Government
+      - Monetary Authority of Singapore
+
+  rounding:
+    percent_value: 1
+    percent_utilization: 1
+    duration: 2
+    dv01: 0
+
+  status:
+    at_limit_tolerance: 0.005
+
+allocation_order:
+  - Singapore Government Securities
+  - MAS Bills
+  - Investment Grade Corporate Bonds
+  - High Yield Bonds
+  - Foreign Currency Bonds (hedged)
+  - Structured Credit (ABS/MBS)
+  - Cash & Cash Equivalents
+
+method_rules:
+  - id: fallen_angels_in_non_ig
+    citation:
+      source_doc: firm_B_brief.md
+      page: 1
+      chunk_id: firm_b_rule_fallen_angels
+      passage_summary: Aggregate non-IG exposure includes fallen angels.
+
+  - id: gre_parent_concentration
+    citation:
+      source_doc: firm_B_brief.md
+      page: 1
+      chunk_id: firm_b_rule_gre_parent
+      passage_summary: GRE concentration is measured at parent issuer.
+
+  - id: truncated_bps_utilization
+    citation:
+      source_doc: firm_B_brief.md
+      page: 1
+      chunk_id: firm_b_rule_utilization_bps
+      passage_summary: Utilization is reported in truncated basis points.
