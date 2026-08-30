@@ -1,0 +1,143 @@
+chunks:
+  - chunk_id: chunk_sec2_alloc_sgs
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for Singapore Government Securities.
+
+  - chunk_id: chunk_sec2_alloc_mas
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for MAS Bills.
+
+  - chunk_id: chunk_sec2_alloc_ig
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for Investment Grade Corporate Bonds.
+
+  - chunk_id: chunk_sec2_alloc_hy
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for High Yield Bonds.
+
+  - chunk_id: chunk_sec2_alloc_fxb
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for Foreign Currency Bonds (hedged).
+
+  - chunk_id: chunk_sec2_alloc_abs
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for Structured Credit (ABS/MBS).
+
+  - chunk_id: chunk_sec2_alloc_cash
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Section 2 allocation limit for Cash & Cash Equivalents.
+
+  - chunk_id: chunk_sec2_note_non_ig
+    source_doc: sample_fund_guidelines.pdf
+    page: 2
+    passage_summary: Aggregate exposure to non-investment-grade instruments must not exceed 20% of NAV.
+
+  - chunk_id: chunk_sec3_1_market_risk
+    source_doc: sample_fund_guidelines.pdf
+    page: 3
+    passage_summary: Market risk limits including modified duration and DV01.
+
+  - chunk_id: chunk_sec3_2_single_issuer
+    source_doc: sample_fund_guidelines.pdf
+    page: 4
+    passage_summary: Single issuer concentration cap excluding Singapore Government.
+
+  - chunk_id: chunk_sec3_2_gre
+    source_doc: sample_fund_guidelines.pdf
+    page: 4
+    passage_summary: Government-related entities concentration cap.
+
+  - chunk_id: chunk_sec3_2_fallen_angel
+    source_doc: sample_fund_guidelines.pdf
+    page: 4
+    passage_summary: Fallen angel monitoring for holdings downgraded below investment grade.
+
+  - chunk_id: chunk_sec3_3_liquidity
+    source_doc: sample_fund_guidelines.pdf
+    page: 4
+    passage_summary: Liquid assets ratio minimum requirement.
+
+asset_classes:
+  - name: Singapore Government Securities
+    limit_min: 20
+    limit_max: 60
+    chunk: chunk_sec2_alloc_sgs
+
+  - name: MAS Bills
+    limit_min: 0
+    limit_max: 40
+    chunk: chunk_sec2_alloc_mas
+
+  - name: Investment Grade Corporate Bonds
+    limit_min: 10
+    limit_max: 50
+    chunk: chunk_sec2_alloc_ig
+
+  - name: High Yield Bonds
+    limit_min: 0
+    limit_max: 15
+    chunk: chunk_sec2_alloc_hy
+
+  - name: Foreign Currency Bonds (hedged)
+    limit_min: 0
+    limit_max: 20
+    chunk: chunk_sec2_alloc_fxb
+
+  - name: Structured Credit (ABS/MBS)
+    limit_min: 0
+    limit_max: 10
+    chunk: chunk_sec2_alloc_abs
+
+  - name: Cash & Cash Equivalents
+    limit_min: 5
+    limit_max: 25
+    chunk: chunk_sec2_alloc_cash
+
+aggregates:
+  - name: Aggregate non-IG exposure
+    limit_max: 20
+    chunk: chunk_sec2_note_non_ig
+    contributors:
+      - High Yield Bonds
+      - Structured Credit (ABS/MBS)
+
+concentration_limits:
+  - name: Largest single corporate issuer
+    limit_max: 8
+    chunk: chunk_sec3_2_single_issuer
+
+  - name: Largest GRE issuer
+    limit_max: 12
+    chunk: chunk_sec3_2_gre
+
+liquidity:
+  name: Liquid assets ratio
+  limit_min: 25
+  chunk: chunk_sec3_3_liquidity
+  components:
+    - Singapore Government Securities
+    - MAS Bills
+    - Cash & Cash Equivalents
+
+risk_metrics:
+  - name: Portfolio modified duration
+    unit: yrs
+    limit_min: 2.0
+    limit_max: 6.5
+    chunk: chunk_sec3_1_market_risk
+    breach_action: PM notification within 1h
+    owner: Portfolio Manager
+
+  - name: Portfolio DV01
+    unit: SGD/bp
+    limit_max: 85000
+    chunk: chunk_sec3_1_market_risk
+    breach_action: Risk Committee alert
+    owner: Risk Committee
